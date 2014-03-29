@@ -6,6 +6,7 @@ using namespace std;
 #define CUSTOMERCONTAINER_H
 
 class CustomerContainer{
+public:
     CustomerContainer();
     ~CustomerContainer();
 
