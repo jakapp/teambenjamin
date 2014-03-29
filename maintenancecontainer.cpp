@@ -25,10 +25,10 @@ void MaintenanceContainer::setDamages(string name){
     damages = name;
 }
 
-void MaintenanceContainer::setFinishDate(int name){
+void MaintenanceContainer::setFinishDate(string name){
     finish_date = name;
 }
-void MaintenanceContainer::setStartDate(int name){
+void MaintenanceContainer::setStartDate(string name){
     start_date = name;
 }
 

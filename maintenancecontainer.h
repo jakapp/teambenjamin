@@ -14,8 +14,8 @@ public:
     void setCarId(int id);
     void setDamages(string name);
     void setCosts(int costs);
-    void setStartDate(int name);
-    void setFinishDate(int name);
+    void setStartDate(string name);
+    void setFinishDate(string name);
 
     int getCarId();
     string getDamages();
