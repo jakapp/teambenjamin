@@ -3,6 +3,12 @@
 #include <occi.h>
 #include <vector>
 #include <iomanip>
+#include <stdlib.h>
+#include <vector>
+#include "maintenancecontainer.h"
+#include "salescontainer.h"
+#include "CustomerContainer.h"
+#include "CarContainer.h"
 
 using namespace std;
 using namespace oracle::occi;
@@ -15,13 +21,25 @@ public:
     SqlInterface();
     ~SqlInterface();
 
-    void connect();
-    void insert();
-    void select();
-    void display();
-    void deleteRow();
-    void createTable();
-    void modifyRow();
+    void connect(string user, string passwd, string db);
+
+    MaintenanceContainer searchMaintenanceData(string query);
+    CustomerContainer searchCustomerData(string query);
+    CarContainer searchCarData(string query);
+    SalesContainer searchSalesData(string query);
+
+    vector<MaintenanceContainer> getMaintenanceData();
+    vector<CustomerContainer> getCustomerData();
+    vector<CarContainer> getCarData();
+    vector<SalesContainer> getSalesData();
+
+    //  Depreciated Functions
+    //    void insert();
+    //    void select();
+    //    void display();
+    //    void deleteRow();
+    //    void createTable();
+    //    void modifyRow();
 
 private:
     string user;
