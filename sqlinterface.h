@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <stdlib.h>
 #include <vector>
+#include <sstream>
 #include "maintenancecontainer.h"
 #include "salescontainer.h"
 #include "CustomerContainer.h"
@@ -33,11 +34,13 @@ public:
     vector<CarContainer> getCarData();
     vector<SalesContainer> getSalesData();
 
+    void deleteRow(string table, int car_id);
+
     //  Depreciated Functions
     //    void insert();
     //    void select();
     //    void display();
-    //    void deleteRow();
+
     //    void createTable();
     //    void modifyRow();
 

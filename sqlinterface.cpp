@@ -291,6 +291,9 @@ vector<MaintenanceContainer> SqlInterface::getMaintenanceData(){
     string query = "select * from maintenance";
     vector<MaintenanceContainer> vContainer;
 
+    if(this == 0 || this == NULL)
+        return vContainer;
+
     stmt = conn->createStatement(query);
 
     try{
@@ -345,6 +348,10 @@ vector<CustomerContainer> SqlInterface::getCustomerData(){
     CustomerContainer cContainer;
     int temp2 = 0;
     vector<CustomerContainer> vContainer;
+    string query = "select * from customers";
+
+    if(this == 0 || this == NULL)
+        return vContainer;
 
     stmt = conn->createStatement(query);
 
@@ -408,8 +415,11 @@ vector<CarContainer> SqlInterface::getCarData(){
     CarContainer cContainer;
     int temp2 = 0;
     vector<CarContainer> vContainer;
+    string query = "select * from cars";
 
-    //query = "select * from maintenance where costs=100";
+
+    if(this == 0 || this == NULL)
+        return vContainer;
 
     stmt = conn->createStatement(query);
 
@@ -479,7 +489,11 @@ vector<SalesContainer> SqlInterface::getSalesData(){
     ResultSet *rset;
     SalesContainer sContainer;
     int temp2 = 0;
+    string query = "select * from sales";
     vector<SalesContainer> vContainer;
+
+    if(this == 0 || this == NULL)
+        return vContainer;
 
     stmt = conn->createStatement(query);
 
@@ -537,6 +551,32 @@ vector<SalesContainer> SqlInterface::getSalesData(){
 
     return vContainer;
 }
+
+void SqlInterface::deleteRow(string table, int car_id)
+{
+    string temp = "delete from ";
+    string temp2;
+    stringstream ss;
+
+    ss << car_id;
+    temp2 = ss.str();
+
+    temp = temp + table + " where car_id=" + temp2 + ";";
+    cout << temp;
+
+
+    stmt = conn->createStatement(query);
+
+    try{
+        stmt->executeUpdate();
+    } catch(SQLException ex){
+        cout<<"Exception thrown for deleteRow" << endl;
+        cout<<"Error number: "<<  ex.getErrorCode() << endl;
+        cout<<ex.getMessage() << endl;
+    }
+    conn->terminateStatement(stmt);
+}
+
 
 /*Depreciated functions. Can be used if needed however they are not tested with this project. */
 
@@ -599,25 +639,6 @@ vector<SalesContainer> SqlInterface::getSalesData(){
 
 //    stmt->closeResultSet (rset);
 //    conn->terminateStatement (stmt);
-//}
-
-//void SqlInterface::deleteRow()
-//{
-//    cout << endl;
-//    cout << "Delete> ";
-//    cin.ignore(1000, '\n');
-//    getline(cin,query);
-
-//    stmt = conn->createStatement(query);
-
-//    try{
-//        stmt->executeUpdate();
-//    } catch(SQLException ex){
-//        cout<<"Exception thrown for deleteRow" << endl;
-//        cout<<"Error number: "<<  ex.getErrorCode() << endl;
-//        cout<<ex.getMessage() << endl;
-//    }
-//    conn->terminateStatement(stmt);
 //}
 
 //void SqlInterface::createTable()
