@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <sqlinterface.h>
+#include <vector>
 
 namespace Ui {
 class MainWindow;
@@ -13,6 +15,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    void setDatabasePointer(SqlInterface *ptr);
     ~MainWindow();
 public slots:
     void AddItem();
@@ -21,6 +24,8 @@ public slots:
     void SetSales();
     void SetMaintenence();
     void SetTable();
+    void saveData();
+    void exitDatabase();
 
 private:
     Ui::MainWindow *ui;
@@ -28,6 +33,8 @@ private:
     static const int supervisor = 0;
     static const int sales = 1;
     static const int maintenance = 2;
+
+    SqlInterface *sqlPtr;
 
     void LoadMaintenanceTable();
     void LoadSalesTable();
