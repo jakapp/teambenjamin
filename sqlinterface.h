@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <sstream>
+#include <cstring>
 #include "maintenancecontainer.h"
 #include "salescontainer.h"
 #include "CustomerContainer.h"
@@ -35,9 +36,13 @@ public:
     vector<SalesContainer> getSalesData();
 
     void deleteRow(string table, int car_id);
+    void maintenanceInsert(vector<MaintenanceContainer> container1, string table);
+    void customerInsert(vector<CustomerContainer> container2, string table);
+    void carInsert(vector<CarContainer> container3, string table);
+    void salesInsert(vector<SalesContainer> container4, string table);
 
     //  Depreciated Functions
-    //    void insert();
+       void insert();
     //    void select();
     //    void display();
 

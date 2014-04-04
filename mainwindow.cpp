@@ -34,8 +34,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->btnRemove->setVisible(false);
     ui->btnSearch->setVisible(false);
 
+    mode = "";
+
     // setup combo box
-    ui->comboBox->addItem( QString("Car"));
+    ui->comboBox->addItem( QString("Cars"));
     ui->comboBox->addItem( QString("Customer"));
     ui->comboBox->addItem( QString("Maintenence"));
     ui->comboBox->addItem( QString("Sales"));
@@ -78,9 +80,171 @@ void MainWindow::exitDatabase()
     QApplication::quit();
 }
 
-void MainWindow::saveData()
+bool MainWindow::saveData()
 {
+    int numRows;
 
+    if(strcmp(mode.c_str(),"") == 0){
+        cout << "***NO MODE SET. UNABLE TO SAVE***" << endl;
+        return false;
+    }
+    else if(strcmp(mode.c_str(),"Maintenance") == 0){
+        vector<MaintenanceContainer> vContainer;
+        QStandardItemModel* model = (QStandardItemModel*)ui->tableView->model();
+        QModelIndex index;
+        numRows = model->rowCount();
+        for(int j = 0; j < numRows; j++){
+            MaintenanceContainer container1;
+            for(int i = 0; i < 5; i++){
+                index = model->index(j,i,QModelIndex());
+                QString tableData = model->data(index).toString();
+                //cout << qPrintable(test) << endl;
+                switch(i)
+                {
+                case 0: container1.setCarId(tableData.toInt());
+                    break;
+                case 1: container1.setDamages(tableData.toStdString());
+                    break;
+                case 2: container1.setCosts(tableData.toInt());
+                    break;
+                case 3: container1.setStartDate(tableData.toStdString());
+                    break;
+                case 4: container1.setFinishDate(tableData.toStdString());
+                    break;
+                }
+            }
+            vContainer.push_back(container1);
+        }
+        sqlPtr->maintenanceInsert(vContainer,mode);
+        return true;
+    }
+    else if(strcmp(mode.c_str(),"Sales") == 0){
+        vector<SalesContainer> vContainer;
+        QStandardItemModel* model = (QStandardItemModel*)ui->tableView->model();
+        QModelIndex index;
+        numRows = model->rowCount();
+
+        for(int j = 0; j < numRows; j++){
+            SalesContainer container2;
+            for(int i = 0; i < 9; i++){
+                index = model->index(j,i,QModelIndex());
+                QString tableData = model->data(index).toString();
+                switch(i)
+                {
+                case 0: container2.setCarId(tableData.toInt());
+                    break;
+                case 1: container2.setAvailability(tableData.toStdString());
+                    break;
+                case 2:  container2.setDeliveryDate(tableData.toStdString());
+                    break;
+                case 3: container2.setCost(tableData.toInt());
+                    break;
+                case 4:  container2.setDateSold(tableData.toStdString());
+                    break;
+                case 5:  container2.setFirstName(tableData.toStdString());
+                    break;
+                case 6:  container2.setLastName(tableData.toStdString());
+                    break;
+                case 7:  container2.setMake(tableData.toStdString());
+                    break;
+                case 8:  container2.setModel(tableData.toStdString());
+                    break;
+                }
+            }
+            vContainer.push_back(container2);
+        }
+        sqlPtr->salesInsert(vContainer, mode);
+        return true;
+    }
+    else if(strcmp(mode.c_str(),"Cars") == 0){
+        vector<CarContainer> vContainer;
+        QStandardItemModel* model = (QStandardItemModel*)ui->tableView->model();
+        QModelIndex index;
+        numRows = model->rowCount();
+
+        for(int j = 0; j < numRows; j++){
+            CarContainer container3;
+            for(int i = 0; i < 13; i++){
+                index = model->index(j,i,QModelIndex());
+                QString tableData = model->data(index).toString();
+                switch(i)
+                {
+                case 0: container3.setCarId(tableData.toInt());
+                    break;
+                case 1: container3.setMake(tableData.toStdString());
+                    break;
+                case 2: container3.setModel(tableData.toStdString());
+                    break;
+                case 3: container3.setPerformance(tableData.toStdString());
+                    break;
+                case 4: container3.setHandeling(tableData.toStdString());
+                    break;
+                case 5: container3.setInstrumentation(tableData.toStdString());
+                    break;
+                case 6: container3.setSafetySecurity(tableData.toStdString());
+                    break;
+                case 7: container3.setDesign(tableData.toStdString());
+                    break;
+                case 8: container3.setAudio(tableData.toStdString());
+                    break;
+                case 9: container3.setComfort(tableData.toStdString());
+                    break;
+                case 10: container3.setMaintenance(tableData.toStdString());
+                    break;
+                case 11: container3.setWarranty(tableData.toStdString());
+                    break;
+                case 12: container3.setPackages(tableData.toStdString());
+                    break;
+                }
+            }
+            vContainer.push_back(container3);
+        }
+        sqlPtr->carInsert(vContainer, mode);
+        return true;
+    }
+    else if(strcmp(mode.c_str(),"Customers") == 0){
+        vector<CustomerContainer> vContainer;
+        QStandardItemModel* model = (QStandardItemModel*)ui->tableView->model();
+        QModelIndex index;
+        numRows = model->rowCount();
+
+        for(int j = 0; j < numRows; j++){
+            CustomerContainer container4;
+            for(int i = 0; i < 10; i++){
+                index = model->index(j,i,QModelIndex());
+                QString tableData = model->data(index).toString();
+                switch(i)
+                {
+                case 0: container4.setCarId(tableData.toInt());
+                    break;
+                case 1: container4.setFirstName(tableData.toStdString());
+                    break;
+                case 2: container4.setLastName(tableData.toStdString());
+                    break;
+                case 3: container4.setAddress(tableData.toStdString());
+                    break;
+                case 4: container4.setState(tableData.toStdString());
+                    break;
+                case 5: container4.setZip(tableData.toInt());
+                    break;
+                case 6:
+                    break;
+                case 7: container4.setDeliveryDate(tableData.toStdString());
+                    break;
+                case 8: container4.setScheduledMaintenance(tableData.toStdString());
+                    break;
+                case 9: container4.setUnscheduledRepairs(tableData.toStdString());
+                    break;
+                }
+            }
+            vContainer.push_back(container4);
+        }
+        sqlPtr->customerInsert(vContainer, mode);
+        return true;
+    }else{
+        cout << "***NO MATCHING MODE FOUND. UNABLE TO SAVE***" << endl;
+        return false;
+    }
 }
 
 void MainWindow::SetSupervisor()
@@ -152,9 +316,8 @@ void MainWindow::SetSupervisor()
 
 
     statusBar()->showMessage(tr("Customer Table"));
+    mode = "Customers";
     ui->tableView->setModel(model);
-
-    cout << statusBar();
 
     userMode = supervisor;
     ui->comboBox->setVisible(true);
@@ -241,7 +404,7 @@ void MainWindow::SetSales()
                 break;
             case 12: qStr = QString::fromStdString(container[j].getPackages());
                 firstRow = new QStandardItem(qStr);
-                model->setItem(j,12,firstRow);;
+                model->setItem(j,12,firstRow);
                 break;
             }
         }
@@ -249,7 +412,7 @@ void MainWindow::SetSales()
 
     statusBar()->showMessage(tr("Car Table"));
     ui->tableView->setModel(model);
-    cout << statusBar();
+    mode = "Cars";
     userMode = sales;
 
     ui->comboBox->setVisible(false);
@@ -302,7 +465,7 @@ void MainWindow::SetMaintenence()
 
     statusBar()->showMessage(tr("Maintenance Table"));
     ui->tableView->setModel(model);
-    cout << &(*statusBar());
+    mode = "Maintenance";
     userMode = maintenance;
 
     ui->comboBox->setVisible(false);
@@ -400,6 +563,7 @@ void MainWindow::SetTable()
             }
 
             statusBar()->showMessage(tr("Car Table"));
+            mode = "Cars";
             ui->tableView->setModel(model);
         }
             break;
@@ -470,6 +634,7 @@ void MainWindow::SetTable()
                 }
             }
             statusBar()->showMessage(tr("Customer Table"));
+            mode = "Customers";
             ui->tableView->setModel(model);
         }
             break;
@@ -514,7 +679,7 @@ void MainWindow::SetTable()
                     }
                 }
             }
-
+            mode = "Maintenance";
             statusBar()->showMessage(tr("Maintenance Table"));
             ui->tableView->setModel(model);
         }
@@ -582,7 +747,7 @@ void MainWindow::SetTable()
                     }
                 }
             }
-
+            mode = "Sales";
             statusBar()->showMessage(tr("Sales Table"));
             ui->tableView->setModel(model);
         }
@@ -654,7 +819,7 @@ void MainWindow::SetTable()
                     }
                 }
             }
-
+            mode = "Sales";
             statusBar()->showMessage(tr("Sales Table"));
             ui->tableView->setModel(model);
         }
@@ -740,7 +905,7 @@ void MainWindow::SetTable()
                     }
                 }
             }
-
+            mode = "Cars";
             statusBar()->showMessage(tr("Car Table"));
             ui->tableView->setModel(model);
         }

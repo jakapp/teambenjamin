@@ -24,7 +24,7 @@ public slots:
     void SetSales();
     void SetMaintenence();
     void SetTable();
-    void saveData();
+    bool saveData();
     void exitDatabase();
 
 private:
@@ -35,6 +35,7 @@ private:
     static const int maintenance = 2;
 
     SqlInterface *sqlPtr;
+    string mode;
 
     void LoadMaintenanceTable();
     void LoadSalesTable();

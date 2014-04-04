@@ -577,6 +577,215 @@ void SqlInterface::deleteRow(string table, int car_id)
     conn->terminateStatement(stmt);
 }
 
+void SqlInterface::maintenanceInsert(vector<MaintenanceContainer> container1, string table)
+{
+    int value0;
+    string value1;
+    int value2;
+    string value3;
+    string value4;
+    string query = "insert into ";
+    string buffer1;
+    string buffer2;
+
+    for(unsigned int j = 0; j < container1.size(); j++){
+        value0 = container1[j].getCarId();
+        value1 = container1[j].getDamages();
+        value2 = container1[j].getCost();
+        value3 = container1[j].getStartDate();
+        value4 = container1[j].getFinishDate();
+
+        stringstream ss;
+        ss << value0;
+        buffer1 = ss.str();
+        stringstream ss2;
+        ss2 << value2;
+        buffer2 = ss2.str();
+        query = query + table + " values (" + buffer1 + ", " + "'" + value1 + "', " +  buffer2 + ", "
+                + "'" + value3 + "', " + "'" + value4 + "')";
+        cout << query << endl;
+
+        stmt = conn->createStatement(query);
+
+        try{
+            stmt->executeUpdate();
+        } catch(SQLException ex){
+            cout<<"Exception thrown for insert"<<endl;
+            cout<<"Error number: "<<  ex.getErrorCode() << endl;
+            cout<<ex.getMessage() << endl;
+        }
+        conn->terminateStatement(stmt);
+
+        query = "insert into ";
+    }
+}
+
+void SqlInterface::salesInsert(vector<SalesContainer> container4, string table)
+{
+    int value0;
+    string value1;
+    string value2;
+    int value3;
+    string value4;
+    string value5;
+    string value6;
+    string value7;
+    string value8;
+    string query = "insert into ";
+    string buffer1;
+    string buffer2;
+
+    for(unsigned int j = 0; j < container4.size(); j++){
+        value0 = container4[j].getCarId();
+        value1 = container4[j].getAvailability();
+        value2 = container4[j].getDeliveryDate();
+        value3 = container4[j].getCost();
+        value4 = container4[j].getDateSold();
+        value5 = container4[j].getFirstName();
+        value6 = container4[j].getLastName();
+        value7 = container4[j].getMake();
+        value8 = container4[j].getModel();
+
+
+        stringstream ss;
+        ss << value0;
+        buffer1 = ss.str();
+        stringstream ss2;
+        ss2 << value3;
+        buffer2 = ss2.str();
+        query = query + table + " values (" + buffer1 + ", " + "'" + value1 + "', '" +  value2 + "', "
+                + buffer2 + ", '" + value4 + "', '" + value5 + "', '" + value6
+                + "', '" + value7 + "', '" + value8 + "')";
+        cout << query << endl;
+
+        stmt = conn->createStatement(query);
+
+        try{
+            stmt->executeUpdate();
+        } catch(SQLException ex){
+            cout<<"Exception thrown for insert"<<endl;
+            cout<<"Error number: "<<  ex.getErrorCode() << endl;
+            cout<<ex.getMessage() << endl;
+        }
+        conn->terminateStatement(stmt);
+
+        query = "insert into ";
+    }
+}
+
+void SqlInterface::carInsert(vector<CarContainer> container3, string table)
+{
+    int value0;
+    string value1;
+    string value2;
+    string value3;
+    string value4;
+    string value5;
+    string value6;
+    string value7;
+    string value8;
+    string value9;
+    string value10;
+    string value11;
+    string value12;
+    string query = "insert into ";
+    string buffer1;
+
+    for(unsigned int j = 0; j < container3.size(); j++){
+        value0 = container3[j].getCarId();
+        value1 = container3[j].getPerformance();
+        value2 = container3[j].getHandeling();
+        value3 = container3[j].getInstrumentation();
+        value4 = container3[j].getSafetySecurity();
+        value5 = container3[j].getDesign();
+        value6 = container3[j].getAudio();
+        value7 = container3[j].getComfort();
+        value8 = container3[j].getMaintenance();
+        value9 = container3[j].getWarranty();
+        value10 = container3[j].getPackages();
+        value11 = container3[j].getMake();
+        value12 = container3[j].getModel();
+
+
+        stringstream ss;
+        ss << value0;
+        buffer1 = ss.str();
+        query = query + table + " values (" + buffer1 + ", " + "'" + value1 + "', '" +  value2 + "', '"
+                + value3 + "', '" + value4 + "', '" + value5 + "', '" + value6
+                + "', '" + value7 + "', '" + value8 + "', '" + value9 + "', '" + value10 + "', '"
+                + value11 + "', '" + value12 + "')";
+        cout << query << endl;
+
+        stmt = conn->createStatement(query);
+
+        try{
+            stmt->executeUpdate();
+        } catch(SQLException ex){
+            cout<<"Exception thrown for insert"<<endl;
+            cout<<"Error number: "<<  ex.getErrorCode() << endl;
+            cout<<ex.getMessage() << endl;
+        }
+        conn->terminateStatement(stmt);
+
+        query = "insert into ";
+    }
+}
+
+void SqlInterface::customerInsert(vector<CustomerContainer> container2, string table)
+{
+    int value0;
+    string value1;
+    string value2;
+    string value3;
+    string value4;
+    int value5;
+    string value6;
+    string value7;
+    string value8;
+    string query = "insert into ";
+    string buffer1;
+    string buffer2;
+
+    for(unsigned int j = 0; j < container2.size(); j++){
+        value0 = container2[j].getCarId();
+        value1 = container2[j].getFirstName();
+        value2 = container2[j].getLastName();
+        value3 = container2[j].getAddress();
+        value4 = container2[j].getState();
+        value5 = container2[j].getZip();
+        value6 = container2[j].getDeliveryDate();
+        value7 = container2[j].getScheduledMaintenance();
+        value8 = container2[j].getUnscheduledRepairs();
+
+
+
+        stringstream ss;
+        ss << value0;
+        buffer1 = ss.str();
+        stringstream ss2;
+        ss << value5;
+        buffer2 = ss.str();
+        query = query + table + " values (" + buffer1 + ", " + "'" + value1 + "', '" +  value2 + "', '"
+                + value3 + "', '" + value4 + "', " + buffer2 + ", '" + value6
+                + "', '" + value7 + "', '" + value8 + "')";
+        cout << query << endl;
+
+        stmt = conn->createStatement(query);
+
+        try{
+            stmt->executeUpdate();
+        } catch(SQLException ex){
+            cout<<"Exception thrown for insert"<<endl;
+            cout<<"Error number: "<<  ex.getErrorCode() << endl;
+            cout<<ex.getMessage() << endl;
+        }
+        conn->terminateStatement(stmt);
+
+        query = "insert into ";
+    }
+}
+
+
 
 /*Depreciated functions. Can be used if needed however they are not tested with this project. */
 
@@ -673,25 +882,6 @@ void SqlInterface::deleteRow(string table, int car_id)
 //        stmt->executeUpdate();
 //    } catch(SQLException ex){
 //        cout<<"Exception thrown for modifyRow" << endl;
-//        cout<<"Error number: "<<  ex.getErrorCode() << endl;
-//        cout<<ex.getMessage() << endl;
-//    }
-//    conn->terminateStatement(stmt);
-//}
-
-//void SqlInterface::insert()
-//{
-//    cout << endl;
-//    cout << "Insert> ";
-//    cin.ignore(1000, '\n');
-//    getline(cin,query);
-
-//    stmt = conn->createStatement(query);
-
-//    try{
-//        stmt->executeUpdate();
-//    } catch(SQLException ex){
-//        cout<<"Exception thrown for insert"<<endl;
 //        cout<<"Error number: "<<  ex.getErrorCode() << endl;
 //        cout<<ex.getMessage() << endl;
 //    }
