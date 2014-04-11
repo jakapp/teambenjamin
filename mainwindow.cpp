@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionExit,SIGNAL(triggered()),this,SLOT(exitDatabase()));
 
     ui->btnAdd->setVisible(false);
-    ui->btnRemove->setVisible(false);
+   // ui->btnRemove->setVisible(false);
     ui->btnSearch->setVisible(false);
 
     mode = "";
@@ -68,7 +68,8 @@ void MainWindow::AddItem()
 void MainWindow::RemoveItem()
 {
     QStandardItemModel* model = (QStandardItemModel*)ui->tableView->model();
-    model->removeRow(model->rowCount());
+    int count = model->rowCount() -1;
+    model->removeRow(count);
     //sqlPtr->deleteRow(/*table name*/, /*car_id from table*/);
 
 
@@ -417,7 +418,7 @@ void MainWindow::SetSales()
 
     ui->comboBox->setVisible(false);
     ui->btnAdd->setVisible(true);
-    ui->btnRemove->setVisible(false);
+    ui->btnRemove->setVisible(true);
     ui->btnSearch->setVisible(true);
 }
 
@@ -470,7 +471,7 @@ void MainWindow::SetMaintenence()
 
     ui->comboBox->setVisible(false);
     ui->btnAdd->setVisible(true);
-    ui->btnRemove->setVisible(false);
+    ui->btnRemove->setVisible(true);
     ui->btnSearch->setVisible(true);
 }
 
