@@ -26,6 +26,7 @@ public slots:
     void SetTable();
     bool saveData();
     void exitDatabase();
+    void OpenSearchDialog();
 
 private:
     Ui::MainWindow *ui;

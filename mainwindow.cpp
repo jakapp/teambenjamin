@@ -2,6 +2,10 @@
 #include "ui_mainwindow.h"
 #include <QtSql/QSqlRelationalTableModel>
 #include <QStandardItemModel>
+#include "searchsales.h"
+#include "carsearchdialog.h"
+#include "searchmaintenancedialog.h"
+#include "searchcustomerdialog.h"
 
 // macros
 #define CAR      0
@@ -29,10 +33,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->radSales,SIGNAL(clicked()),this,SLOT(SetTable()));
     connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(saveData()));
     connect(ui->actionExit,SIGNAL(triggered()),this,SLOT(exitDatabase()));
+    connect(ui->btnSearch,SIGNAL(clicked()),this, SLOT(OpenSearchDialog()));
 
     ui->btnAdd->setVisible(false);
-   // ui->btnRemove->setVisible(false);
+    ui->btnRemove->setVisible(false);
     ui->btnSearch->setVisible(false);
+    ui->radCar->setVisible(false);
+    ui->radSales->setVisible(false);
+    ui->comboBox->setVisible(false);
 
     mode = "";
 
@@ -325,6 +333,8 @@ void MainWindow::SetSupervisor()
     ui->btnAdd->setVisible(true);
     ui->btnRemove->setVisible(true);
     ui->btnSearch->setVisible(true);
+    ui->radCar->setVisible(false);
+    ui->radSales->setVisible(false);
 
 }
 
@@ -416,6 +426,8 @@ void MainWindow::SetSales()
     mode = "Cars";
     userMode = sales;
 
+    ui->radCar->setVisible(true);
+    ui->radSales->setVisible(true);
     ui->comboBox->setVisible(false);
     ui->btnAdd->setVisible(true);
     ui->btnRemove->setVisible(true);
@@ -473,6 +485,8 @@ void MainWindow::SetMaintenence()
     ui->btnAdd->setVisible(true);
     ui->btnRemove->setVisible(true);
     ui->btnSearch->setVisible(true);
+    ui->radCar->setVisible(false);
+    ui->radSales->setVisible(false);
 }
 
 void MainWindow::SetTable()
@@ -757,6 +771,7 @@ void MainWindow::SetTable()
             return;
             break;
         }
+
         if(ui->radSales->isChecked() && (userMode == sales))
         {
             QStandardItemModel* model = new QStandardItemModel(1,9,this);
@@ -911,3 +926,65 @@ void MainWindow::SetTable()
             ui->tableView->setModel(model);
         }
 }
+
+void MainWindow::OpenSearchDialog()
+{
+    char* c = const_cast<char*>(mode.c_str());
+
+    if (strcmp(c,"Sales") == 0)
+    {
+        SalesDialog* salesDialog;
+        salesDialog = new SalesDialog();
+        salesDialog->exec();
+
+        SalesContainer* container = salesDialog->GetSalesContainer();
+
+        // PREFORM SEARCH....
+
+
+
+        delete salesDialog;
+
+    }
+    else if(strcmp(c,"Cars") == 0)
+    {
+        CarSearchDialog* csd = new CarSearchDialog();
+        csd->exec();
+
+        CarContainer* container = csd->GetContainer();
+
+        //PERFORM SEARCH
+
+
+
+        delete csd;
+    }
+    else if(strcmp(c,"Maintenance") == 0)
+    {
+        SearchMaintenanceDialog* msd = new SearchMaintenanceDialog();
+        msd->exec();
+
+        MaintenanceContainer* container = msd->GetContainer();
+
+        //PERFORM SEARCH
+
+
+
+        delete msd;
+    }
+    else if(strcmp(c,"Customers") == 0)
+    {
+        SearchCustomerDialog* csd = new SearchCustomerDialog();
+        csd->exec();
+
+        CustomerContainer* container = csd->GetContainer();
+
+        //PERFORM SEARCH
+
+
+
+        delete csd;
+    }
+}
+
+
