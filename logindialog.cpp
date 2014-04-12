@@ -9,7 +9,7 @@ LoginDialog::LoginDialog(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->btnLogin, SIGNAL(clicked()), this, SLOT(Login()));
     connect(ui->btnCancel,SIGNAL(clicked()), this, SLOT(close()));
-    ui->txtPassword->setEchoMode(QLineEdit::PasswordEchoOnEdit);
+    ui->txtPassword->setEchoMode(QLineEdit::Password);
     user = 0;
 }
 
