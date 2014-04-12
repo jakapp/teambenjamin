@@ -2,6 +2,11 @@
 #include "ui_mainwindow.h"
 #include <QtSql/QSqlRelationalTableModel>
 #include <QStandardItemModel>
+#include "searchsales.h"
+#include "carsearchdialog.h"
+#include "searchmaintenancedialog.h"
+#include "searchcustomerdialog.h"
+#include "logindialog.h"
 
 // macros
 #define CAR      0
@@ -21,20 +26,23 @@ MainWindow::MainWindow(QWidget *parent) :
 //  connect(, SIGNAL(destroyed(QObject*)), this, SLOT(objectDestroyed(Qbject*)));
     connect(ui->btnAdd,SIGNAL(clicked()),this,SLOT(AddItem()));
     connect(ui->btnRemove,SIGNAL(clicked()),this,SLOT(RemoveItem()));
-    connect(ui->actionSupervisor,SIGNAL(triggered()),this,SLOT(SetSupervisor()));
-    connect(ui->actionSales,SIGNAL(triggered()),this,SLOT(SetSales()));
-    connect(ui->actionMaintenence,SIGNAL(triggered()),this,SLOT(SetMaintenence()));
     connect(ui->comboBox,SIGNAL(currentIndexChanged(QString)),this,SLOT(SetTable()));
     connect(ui->radCar,SIGNAL(clicked()),this,SLOT(SetTable()));
     connect(ui->radSales,SIGNAL(clicked()),this,SLOT(SetTable()));
     connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(saveData()));
     connect(ui->actionExit,SIGNAL(triggered()),this,SLOT(exitDatabase()));
+    connect(ui->btnSearch,SIGNAL(clicked()),this, SLOT(OpenSearchDialog()));
+    connect(ui->actionLogin,SIGNAL(triggered()),this,SLOT(Logout()));
 
     ui->btnAdd->setVisible(false);
     ui->btnRemove->setVisible(false);
     ui->btnSearch->setVisible(false);
     ui->radCar->setVisible(false);
     ui->radSales->setVisible(false);
+<<<<<<< HEAD
+=======
+    ui->comboBox->setVisible(false);
+>>>>>>> 4f3e42bfbdee489ff4d638520bf46ee00f6fc4c9
 
     mode = "";
 
@@ -44,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBox->addItem( QString("Maintenence"));
     ui->comboBox->addItem( QString("Sales"));
     ui->comboBox->setCurrentIndex(SALES);
+<<<<<<< HEAD
     ui->comboBox->setVisible(false);
 
     ui->tableView->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
@@ -53,6 +62,35 @@ MainWindow::MainWindow(QWidget *parent) :
 //    layout->addWidget(ui->mainToolBar);
 //    layout->addWidget(ui->statusBar);
 //    this->setLayout(layout);
+=======
+
+    LoginDialog* login = new LoginDialog();
+    login->exec();
+
+    if (login->GetUser() == 0)
+        close();
+    else
+    {
+        switch(login->GetUser())
+        {
+            case 1:
+            {
+                SetSales();
+            }
+                break;
+            case 2:
+            {
+                SetMaintenence();
+            }
+                break;
+            case 3:
+            {
+                SetSupervisor();
+            }
+        }
+    }
+
+>>>>>>> 4f3e42bfbdee489ff4d638520bf46ee00f6fc4c9
 /*
     QStandardItem *firstRow = new QStandardItem(QString("ColumnValue"));
     model->setItem(0,0,firstRow);
@@ -78,7 +116,8 @@ void MainWindow::AddItem()
 void MainWindow::RemoveItem()
 {
     QStandardItemModel* model = (QStandardItemModel*)ui->tableView->model();
-    model->removeRow(model->rowCount());
+    int count = model->rowCount() -1;
+    model->removeRow(count);
     //sqlPtr->deleteRow(/*table name*/, /*car_id from table*/);
 
 
@@ -426,9 +465,11 @@ void MainWindow::SetSales()
     mode = "Cars";
     userMode = sales;
 
+    ui->radCar->setVisible(true);
+    ui->radSales->setVisible(true);
     ui->comboBox->setVisible(false);
     ui->btnAdd->setVisible(true);
-    ui->btnRemove->setVisible(false);
+    ui->btnRemove->setVisible(true);
     ui->btnSearch->setVisible(true);
     ui->radCar->setVisible(true);
     ui->radSales->setVisible(true);
@@ -484,7 +525,7 @@ void MainWindow::SetMaintenence()
 
     ui->comboBox->setVisible(false);
     ui->btnAdd->setVisible(true);
-    ui->btnRemove->setVisible(false);
+    ui->btnRemove->setVisible(true);
     ui->btnSearch->setVisible(true);
     ui->radCar->setVisible(false);
     ui->radSales->setVisible(false);
@@ -772,6 +813,7 @@ void MainWindow::SetTable()
             return;
             break;
         }
+
         if(ui->radSales->isChecked() && (userMode == sales))
         {
             QStandardItemModel* model = new QStandardItemModel(1,9,this);
@@ -925,4 +967,102 @@ void MainWindow::SetTable()
             statusBar()->showMessage(tr("Car Table"));
             ui->tableView->setModel(model);
         }
+}
+
+void MainWindow::OpenSearchDialog()
+{
+    char* c = const_cast<char*>(mode.c_str());
+
+    if (strcmp(c,"Sales") == 0)
+    {
+        SalesDialog* salesDialog;
+        salesDialog = new SalesDialog();
+        salesDialog->exec();
+
+        SalesContainer* container = salesDialog->GetSalesContainer();
+
+        // PREFORM SEARCH....
+
+
+
+        delete salesDialog;
+
+    }
+    else if(strcmp(c,"Cars") == 0)
+    {
+        CarSearchDialog* csd = new CarSearchDialog();
+        csd->exec();
+
+        CarContainer* container = csd->GetContainer();
+
+        //PERFORM SEARCH
+
+
+
+        delete csd;
+    }
+    else if(strcmp(c,"Maintenance") == 0)
+    {
+        SearchMaintenanceDialog* msd = new SearchMaintenanceDialog();
+        msd->exec();
+
+        MaintenanceContainer* container = msd->GetContainer();
+
+        //PERFORM SEARCH
+
+
+
+        delete msd;
+    }
+    else if(strcmp(c,"Customers") == 0)
+    {
+        SearchCustomerDialog* csd = new SearchCustomerDialog();
+        csd->exec();
+
+        CustomerContainer* container = csd->GetContainer();
+
+        //PERFORM SEARCH
+
+
+
+        delete csd;
+    }
+}
+
+void MainWindow::Logout()
+{
+    ui->btnAdd->setVisible(false);
+    ui->btnRemove->setVisible(false);
+    ui->btnSearch->setVisible(false);
+    ui->radCar->setVisible(false);
+    ui->radSales->setVisible(false);
+    ui->comboBox->setVisible(false);
+
+    mode = "";
+
+    LoginDialog* login = new LoginDialog();
+    login->exec();
+
+    if (login->GetUser() == 0)
+        close();
+    else
+    {
+        switch(login->GetUser())
+        {
+            case 1:
+            {
+                SetSales();
+            }
+                break;
+            case 2:
+            {
+                SetMaintenence();
+            }
+                break;
+            case 3:
+            {
+                SetSupervisor();
+            }
+        }
+    }
 }

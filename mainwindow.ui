@@ -6,14 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
+<<<<<<< HEAD
     <width>639</width>
     <height>301</height>
+=======
+    <width>602</width>
+    <height>296</height>
+>>>>>>> 4f3e42bfbdee489ff4d638520bf46ee00f6fc4c9
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
+<<<<<<< HEAD
    <layout class="QGridLayout" name="gridLayout">
     <item row="5" column="1">
      <widget class="QRadioButton" name="radCar">
@@ -63,30 +69,123 @@
      <widget class="QTableView" name="tableView"/>
     </item>
    </layout>
+=======
+   <widget class="QTableView" name="tableView">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>441</width>
+      <height>241</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnSearch">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>70</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Search</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnAdd">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>10</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Add</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnRemove">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>40</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Remove</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>170</y>
+      <width>101</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radSales">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>140</y>
+      <width>82</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Sales</string>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radCar">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>110</y>
+      <width>111</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Car Inventory</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+>>>>>>> 4f3e42bfbdee489ff4d638520bf46ee00f6fc4c9
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
+<<<<<<< HEAD
      <width>639</width>
      <height>21</height>
+=======
+     <width>602</width>
+     <height>19</height>
+>>>>>>> 4f3e42bfbdee489ff4d638520bf46ee00f6fc4c9
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
     </property>
-    <widget class="QMenu" name="menuLog_In">
-     <property name="title">
-      <string>Log-In</string>
-     </property>
-     <addaction name="actionSupervisor"/>
-     <addaction name="actionSales"/>
-     <addaction name="actionMaintenence"/>
-    </widget>
-    <addaction name="menuLog_In"/>
     <addaction name="actionSave"/>
+    <addaction name="actionLogin"/>
     <addaction name="actionExit"/>
    </widget>
    <addaction name="menuFile"/>
@@ -123,6 +222,11 @@
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
+   </property>
+  </action>
+  <action name="actionLogin">
+   <property name="text">
+    <string>Logout</string>
    </property>
   </action>
  </widget>
