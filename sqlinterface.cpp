@@ -27,7 +27,6 @@ void SqlInterface::connect(string user, string passwd, string db)
     cout << passwd << endl;
     cout << "Database: ";
     cout << db << endl;
-    cout << endl;
 
     conn = env->createConnection(user,passwd,db);
     cout << "Connection to database created..." << endl;
@@ -74,7 +73,6 @@ MaintenanceContainer SqlInterface::searchMaintenanceData(string query){
                 }
             }
         }
-        cout << endl;
     }
     catch(SQLException ex){
         cout<<"Exception thrown for select"<<endl;
@@ -137,7 +135,6 @@ CustomerContainer SqlInterface::searchCustomerData(string query){
                 }
             }
         }
-        cout << endl;
     }
     catch(SQLException ex){
         cout<<"Exception thrown for select"<<endl;
@@ -207,7 +204,6 @@ CarContainer SqlInterface::searchCarData(string query){
                 }
             }
         }
-        cout << endl;
     }
     catch(SQLException ex){
         cout<<"Exception thrown for select"<<endl;
@@ -270,7 +266,6 @@ SalesContainer SqlInterface::searchSalesData(string query){
                 }
             }
         }
-        cout << endl;
     }
     catch(SQLException ex){
         cout<<"Exception thrown for select"<<endl;
@@ -329,7 +324,6 @@ vector<MaintenanceContainer> SqlInterface::getMaintenanceData(){
             }
             vContainer.push_back(mContainer);
         }
-        cout << endl;
     }
     catch(SQLException ex){
         cout<<"Exception thrown for select"<<endl;
@@ -396,7 +390,6 @@ vector<CustomerContainer> SqlInterface::getCustomerData(){
             }
             vContainer.push_back(cContainer);
         }
-        cout << endl;
     }
     catch(SQLException ex){
         cout<<"Exception thrown for select"<<endl;
@@ -471,7 +464,6 @@ vector<CarContainer> SqlInterface::getCarData(){
             }
             vContainer.push_back(cContainer);
         }
-        cout << endl;
     }
     catch(SQLException ex){
         cout<<"Exception thrown for select"<<endl;
@@ -538,7 +530,6 @@ vector<SalesContainer> SqlInterface::getSalesData(){
             }
             vContainer.push_back(sContainer);
         }
-        cout << endl;
     }
     catch(SQLException ex){
         cout<<"Exception thrown for select"<<endl;
@@ -763,8 +754,8 @@ void SqlInterface::customerInsert(vector<CustomerContainer> container2, string t
         ss << value0;
         buffer1 = ss.str();
         stringstream ss2;
-        ss << value5;
-        buffer2 = ss.str();
+        ss2 << value5;
+        buffer2 = ss2.str();
         query = query + table + " values (" + buffer1 + ", " + "'" + value1 + "', '" +  value2 + "', '"
                 + value3 + "', '" + value4 + "', " + buffer2 + ", '" + value6
                 + "', '" + value7 + "', '" + value8 + "')";

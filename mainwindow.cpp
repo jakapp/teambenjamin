@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),userMode(supervisor)
 {
     ui->setupUi(this);
-
+    QVBoxLayout *layout = new QVBoxLayout(parent);
     sqlPtr = NULL;
 
 //  connect(, SIGNAL(destroyed(QObject*)), this, SLOT(objectDestroyed(Qbject*)));
@@ -33,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->btnAdd->setVisible(false);
     ui->btnRemove->setVisible(false);
     ui->btnSearch->setVisible(false);
+    ui->radCar->setVisible(false);
+    ui->radSales->setVisible(false);
 
     mode = "";
 
@@ -41,8 +43,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBox->addItem( QString("Customer"));
     ui->comboBox->addItem( QString("Maintenence"));
     ui->comboBox->addItem( QString("Sales"));
-
     ui->comboBox->setCurrentIndex(SALES);
+    ui->comboBox->setVisible(false);
+
+    ui->tableView->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+
+//    layout->addWidget(ui->centralWidget);
+//    layout->addWidget(ui->menuBar);
+//    layout->addWidget(ui->mainToolBar);
+//    layout->addWidget(ui->statusBar);
+//    this->setLayout(layout);
 /*
     QStandardItem *firstRow = new QStandardItem(QString("ColumnValue"));
     model->setItem(0,0,firstRow);
@@ -98,7 +108,6 @@ bool MainWindow::saveData()
             for(int i = 0; i < 5; i++){
                 index = model->index(j,i,QModelIndex());
                 QString tableData = model->data(index).toString();
-                //cout << qPrintable(test) << endl;
                 switch(i)
                 {
                 case 0: container1.setCarId(tableData.toInt());
@@ -324,6 +333,8 @@ void MainWindow::SetSupervisor()
     ui->btnAdd->setVisible(true);
     ui->btnRemove->setVisible(true);
     ui->btnSearch->setVisible(true);
+    ui->radCar->setVisible(false);
+    ui->radSales->setVisible(false);
 
 }
 
@@ -419,6 +430,9 @@ void MainWindow::SetSales()
     ui->btnAdd->setVisible(true);
     ui->btnRemove->setVisible(false);
     ui->btnSearch->setVisible(true);
+    ui->radCar->setVisible(true);
+    ui->radSales->setVisible(true);
+    ui->radCar->setChecked(true);
 }
 
 void MainWindow::SetMaintenence()
@@ -472,6 +486,8 @@ void MainWindow::SetMaintenence()
     ui->btnAdd->setVisible(true);
     ui->btnRemove->setVisible(false);
     ui->btnSearch->setVisible(true);
+    ui->radCar->setVisible(false);
+    ui->radSales->setVisible(false);
 }
 
 void MainWindow::SetTable()
