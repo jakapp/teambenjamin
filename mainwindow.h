@@ -20,9 +20,7 @@ public:
 public slots:
     void AddItem();
     void RemoveItem();
-    void SetSupervisor();
-    void SetSales();
-    void SetMaintenence();
+    void Logout();
     void SetTable();
     bool saveData();
     void exitDatabase();
@@ -42,6 +40,9 @@ private:
     void LoadSalesTable();
     void LoadCarTable();
     void LoadCustomerTable();
+    void SetSupervisor();
+    void SetSales();
+    void SetMaintenence();
 };
 
 #endif // MAINWINDOW_H

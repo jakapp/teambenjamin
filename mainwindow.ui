@@ -122,16 +122,8 @@
     <property name="title">
      <string>File</string>
     </property>
-    <widget class="QMenu" name="menuLog_In">
-     <property name="title">
-      <string>Log-In</string>
-     </property>
-     <addaction name="actionSupervisor"/>
-     <addaction name="actionSales"/>
-     <addaction name="actionMaintenence"/>
-    </widget>
-    <addaction name="menuLog_In"/>
     <addaction name="actionSave"/>
+    <addaction name="actionLogin"/>
     <addaction name="actionExit"/>
    </widget>
    <addaction name="menuFile"/>
@@ -168,6 +160,11 @@
   <action name="actionSave">
    <property name="text">
     <string>Save</string>
+   </property>
+  </action>
+  <action name="actionLogin">
+   <property name="text">
+    <string>Logout</string>
    </property>
   </action>
  </widget>

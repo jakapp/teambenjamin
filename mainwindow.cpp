@@ -6,6 +6,7 @@
 #include "carsearchdialog.h"
 #include "searchmaintenancedialog.h"
 #include "searchcustomerdialog.h"
+#include "logindialog.h"
 
 // macros
 #define CAR      0
@@ -25,15 +26,13 @@ MainWindow::MainWindow(QWidget *parent) :
 //  connect(, SIGNAL(destroyed(QObject*)), this, SLOT(objectDestroyed(Qbject*)));
     connect(ui->btnAdd,SIGNAL(clicked()),this,SLOT(AddItem()));
     connect(ui->btnRemove,SIGNAL(clicked()),this,SLOT(RemoveItem()));
-    connect(ui->actionSupervisor,SIGNAL(triggered()),this,SLOT(SetSupervisor()));
-    connect(ui->actionSales,SIGNAL(triggered()),this,SLOT(SetSales()));
-    connect(ui->actionMaintenence,SIGNAL(triggered()),this,SLOT(SetMaintenence()));
     connect(ui->comboBox,SIGNAL(currentIndexChanged(QString)),this,SLOT(SetTable()));
     connect(ui->radCar,SIGNAL(clicked()),this,SLOT(SetTable()));
     connect(ui->radSales,SIGNAL(clicked()),this,SLOT(SetTable()));
     connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(saveData()));
     connect(ui->actionExit,SIGNAL(triggered()),this,SLOT(exitDatabase()));
     connect(ui->btnSearch,SIGNAL(clicked()),this, SLOT(OpenSearchDialog()));
+    connect(ui->actionLogin,SIGNAL(triggered()),this,SLOT(Logout()));
 
     ui->btnAdd->setVisible(false);
     ui->btnRemove->setVisible(false);
@@ -51,6 +50,33 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBox->addItem( QString("Sales"));
 
     ui->comboBox->setCurrentIndex(SALES);
+
+    LoginDialog* login = new LoginDialog();
+    login->exec();
+
+    if (login->GetUser() == 0)
+        close();
+    else
+    {
+        switch(login->GetUser())
+        {
+            case 1:
+            {
+                SetSales();
+            }
+                break;
+            case 2:
+            {
+                SetMaintenence();
+            }
+                break;
+            case 3:
+            {
+                SetSupervisor();
+            }
+        }
+    }
+
 /*
     QStandardItem *firstRow = new QStandardItem(QString("ColumnValue"));
     model->setItem(0,0,firstRow);
@@ -987,4 +1013,40 @@ void MainWindow::OpenSearchDialog()
     }
 }
 
+void MainWindow::Logout()
+{
+    ui->btnAdd->setVisible(false);
+    ui->btnRemove->setVisible(false);
+    ui->btnSearch->setVisible(false);
+    ui->radCar->setVisible(false);
+    ui->radSales->setVisible(false);
+    ui->comboBox->setVisible(false);
 
+    mode = "";
+
+    LoginDialog* login = new LoginDialog();
+    login->exec();
+
+    if (login->GetUser() == 0)
+        close();
+    else
+    {
+        switch(login->GetUser())
+        {
+            case 1:
+            {
+                SetSales();
+            }
+                break;
+            case 2:
+            {
+                SetMaintenence();
+            }
+                break;
+            case 3:
+            {
+                SetSupervisor();
+            }
+        }
+    }
+}
