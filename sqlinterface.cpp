@@ -552,11 +552,9 @@ void SqlInterface::deleteRow(string table, int car_id)
     ss << car_id;
     temp2 = ss.str();
 
-    temp = temp + table + " where car_id=" + temp2 + ";";
-    cout << temp;
+    temp = temp + table + " where car_id=" + temp2;
 
-
-    stmt = conn->createStatement(query);
+    stmt = conn->createStatement(temp);
 
     try{
         stmt->executeUpdate();

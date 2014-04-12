@@ -39,10 +39,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->btnSearch->setVisible(false);
     ui->radCar->setVisible(false);
     ui->radSales->setVisible(false);
-<<<<<<< HEAD
-=======
+
     ui->comboBox->setVisible(false);
->>>>>>> 4f3e42bfbdee489ff4d638520bf46ee00f6fc4c9
 
     mode = "";
 
@@ -52,7 +50,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBox->addItem( QString("Maintenence"));
     ui->comboBox->addItem( QString("Sales"));
     ui->comboBox->setCurrentIndex(SALES);
-<<<<<<< HEAD
     ui->comboBox->setVisible(false);
 
     ui->tableView->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
@@ -62,7 +59,6 @@ MainWindow::MainWindow(QWidget *parent) :
 //    layout->addWidget(ui->mainToolBar);
 //    layout->addWidget(ui->statusBar);
 //    this->setLayout(layout);
-=======
 
     LoginDialog* login = new LoginDialog();
     login->exec();
@@ -90,7 +86,6 @@ MainWindow::MainWindow(QWidget *parent) :
         }
     }
 
->>>>>>> 4f3e42bfbdee489ff4d638520bf46ee00f6fc4c9
 /*
     QStandardItem *firstRow = new QStandardItem(QString("ColumnValue"));
     model->setItem(0,0,firstRow);
@@ -116,12 +111,33 @@ void MainWindow::AddItem()
 void MainWindow::RemoveItem()
 {
     QStandardItemModel* model = (QStandardItemModel*)ui->tableView->model();
-    int count = model->rowCount() -1;
-    model->removeRow(count);
-    //sqlPtr->deleteRow(/*table name*/, /*car_id from table*/);
+    QModelIndex index;
+    QModelIndexList indexList = ui->tableView->selectionModel()->selectedIndexes();
+    int row;
+    foreach(QModelIndex indexs, indexList){
+        row = indexs.row();
+        index = model->index(row,0,QModelIndex());
+        QString tableData = model->data(index).toString();
 
-
-
+        if(strcmp(mode.c_str(),"") == 0){
+            cout << "***NO MODE SET. UNABLE TO REMOVE***" << endl;
+        }
+        else if(strcmp(mode.c_str(),"Maintenance") == 0){
+            sqlPtr->deleteRow("Maintenance", tableData.toInt());
+        }
+        else if(strcmp(mode.c_str(),"Sales") == 0){
+            sqlPtr->deleteRow("Sales", tableData.toInt());
+        }
+        else if(strcmp(mode.c_str(),"Cars") == 0){
+            sqlPtr->deleteRow("Cars", tableData.toInt());
+        }
+        else if(strcmp(mode.c_str(),"Customers") == 0){
+            sqlPtr->deleteRow("Customers", tableData.toInt());
+        }else{
+            cout << "***NO MATCHING MODE FOUND. UNABLE TO REMOVE***" << endl;
+        }
+        model->removeRow(row);
+    }
 }
 
 void MainWindow::exitDatabase()

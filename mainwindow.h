@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QVBoxLayout>
+#include <QItemSelectionModel>
 #include <sqlinterface.h>
 #include <vector>
 
