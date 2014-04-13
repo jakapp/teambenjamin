@@ -32,12 +32,53 @@ void SqlInterface::connect(string user, string passwd, string db)
     cout << "Connection to database created..." << endl;
 }
 
-MaintenanceContainer SqlInterface::searchMaintenanceData(string query){
+vector<MaintenanceContainer> SqlInterface::searchMaintenanceData(MaintenanceContainer container){
     ResultSet *rset;
-    MaintenanceContainer mContainer;
+    vector<MaintenanceContainer> vContainer;
     int temp2 = 0;
+    string query = "select * from Maintenance where ";
+    string buffer1;
+    string buffer2;
+    bool firstValue = true;
 
-    //query = "select * from maintenance where costs=100";
+    if(container.getCarId() != 0){
+        stringstream ss;
+        ss << container.getCarId();
+        buffer1 = ss.str();
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "car_id=" + buffer1 + " ";
+        firstValue = false;
+    }
+    if(strcmp(container.getDamages().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "damages='" + container.getDamages() + "' ";
+        firstValue = false;
+    }
+    if(container.getCost() != 0){
+        stringstream ss2;
+        ss2 << container.getCost();
+        buffer2 = ss2.str();
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "cost=" + buffer2 + " ";
+        firstValue = false;
+    }
+    if(strcmp(container.getStartDate().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "start_date='" + container.getStartDate() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getFinishDate().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "finish_date='" + container.getFinishDate() + "' ";
+        firstValue = false;
+    }
+    if(firstValue == true)
+        query = "select * from Sales where car_id=0";
 
     stmt = conn->createStatement(query);
 
@@ -48,12 +89,16 @@ MaintenanceContainer SqlInterface::searchMaintenanceData(string query){
         cout<<"Exception thrown for select"<<endl;
         cout<<"Error number: "<<  ex.getErrorCode() << endl;
         cout<<ex.getMessage() << endl;
+        stmt->closeResultSet (rset);
+        conn->terminateStatement (stmt);
+        return vContainer;
     }
 
     vector<MetaData> data = rset->getColumnListMetaData();
 
     try{
         while(rset->next()){
+            MaintenanceContainer mContainer;
             for(unsigned int i = 0; i < data.size(); i++){
                 temp = rset->getString(i+1);
                 switch(i)
@@ -72,26 +117,95 @@ MaintenanceContainer SqlInterface::searchMaintenanceData(string query){
                     break;
                 }
             }
+            vContainer.push_back(mContainer);
         }
     }
     catch(SQLException ex){
         cout<<"Exception thrown for select"<<endl;
         cout<<"Error number: "<<  ex.getErrorCode() << endl;
         cout<<ex.getMessage() << endl;
+        stmt->closeResultSet (rset);
+        conn->terminateStatement (stmt);
+        return vContainer;
     }
 
     stmt->closeResultSet (rset);
     conn->terminateStatement (stmt);
 
-    return mContainer;
+    return vContainer;
 }
 
-CustomerContainer SqlInterface::searchCustomerData(string query){
+vector<CustomerContainer> SqlInterface::searchCustomerData(CustomerContainer container){
     ResultSet *rset;
-    CustomerContainer cContainer;
     int temp2 = 0;
+    vector<CustomerContainer> vContainer;
+    string query = "select * from Customers where ";
+    string buffer1;
+    string buffer2;
+    bool firstValue = true;
 
-    //query = "select * from maintenance where costs=100";
+    if(container.getCarId() != 0){
+        stringstream ss;
+        ss << container.getCarId();
+        buffer1 = ss.str();
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "car_id=" + buffer1 + " ";
+        firstValue = false;
+    }
+    if(strcmp(container.getFirstName().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "first_name='" + container.getFirstName() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getLastName().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "last_name='" + container.getLastName() + "' ";
+        firstValue = false;
+    }
+    if(container.getZip() != 0){
+        stringstream ss2;
+        ss2 << container.getZip();
+        buffer2 = ss2.str();
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "zip=" + buffer2 + " ";
+        firstValue = false;
+    }
+    if(strcmp(container.getAddress().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "address='" + container.getAddress() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getState().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "state='" + container.getState() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getDeliveryDate().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "delivery_date='" + container.getDeliveryDate() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getScheduledMaintenance().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "scheduled_maintenance='" + container.getScheduledMaintenance() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getUnscheduledRepairs().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "unscheduled_repairs='" + container.getUnscheduledRepairs() + "' ";
+        firstValue = false;
+    }
+    if(firstValue == true)
+        query = "select * from Sales where car_id=0";
 
     stmt = conn->createStatement(query);
 
@@ -102,12 +216,16 @@ CustomerContainer SqlInterface::searchCustomerData(string query){
         cout<<"Exception thrown for select"<<endl;
         cout<<"Error number: "<<  ex.getErrorCode() << endl;
         cout<<ex.getMessage() << endl;
+        stmt->closeResultSet (rset);
+        conn->terminateStatement (stmt);
+        return vContainer;
     }
 
     vector<MetaData> data = rset->getColumnListMetaData();
 
     try{
         while(rset->next()){
+            CustomerContainer cContainer;
             for(unsigned int i = 0; i < data.size(); i++){
                 temp = rset->getString(i+1);
                 switch(i)
@@ -134,26 +252,115 @@ CustomerContainer SqlInterface::searchCustomerData(string query){
                     break;
                 }
             }
+            vContainer.push_back(cContainer);
         }
     }
     catch(SQLException ex){
         cout<<"Exception thrown for select"<<endl;
         cout<<"Error number: "<<  ex.getErrorCode() << endl;
         cout<<ex.getMessage() << endl;
+        stmt->closeResultSet (rset);
+        conn->terminateStatement (stmt);
+        return vContainer;
     }
 
     stmt->closeResultSet (rset);
     conn->terminateStatement (stmt);
 
-    return cContainer;
+    return vContainer;
 }
 
-CarContainer SqlInterface::searchCarData(string query){
+vector<CarContainer> SqlInterface::searchCarData(CarContainer container){
     ResultSet *rset;
-    CarContainer cContainer;
     int temp2 = 0;
+    string query = "select * from Cars where ";
+    string buffer1;
+    bool firstValue = true;
+    vector<CarContainer> vContainer;
 
-    //query = "select * from maintenance where costs=100";
+    if(container.getCarId() != 0){
+        stringstream ss;
+        ss << container.getCarId();
+        buffer1 = ss.str();
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "car_id=" + buffer1 + " ";
+        firstValue = false;
+    }
+    if(strcmp(container.getMake().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "make='" + container.getMake() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getModel().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "model='" + container.getModel() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getPerformance().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "performance=" + container.getPerformance() + " ";
+        firstValue = false;
+    }
+    if(strcmp(container.getHandeling().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "handeling='" + container.getHandeling() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getInstrumentation().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "instrumentation='" + container.getInstrumentation() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getSafetySecurity().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "safety_security='" + container.getSafetySecurity() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getDesign().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "design='" + container.getDesign() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getAudio().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "audio='" + container.getAudio() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getComfort().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "comfort='" + container.getComfort() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getMaintenance().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "maintenance='" + container.getMaintenance() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getWarranty().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "design='" + container.getWarranty() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getPackages().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "packages='" + container.getPackages() + "' ";
+        firstValue = false;
+    }
+    if(firstValue == true)
+        query = "select * from Sales where car_id=0";
 
     stmt = conn->createStatement(query);
 
@@ -164,12 +371,16 @@ CarContainer SqlInterface::searchCarData(string query){
         cout<<"Exception thrown for select"<<endl;
         cout<<"Error number: "<<  ex.getErrorCode() << endl;
         cout<<ex.getMessage() << endl;
+        stmt->closeResultSet (rset);
+        conn->terminateStatement (stmt);
+        return vContainer;
     }
 
     vector<MetaData> data = rset->getColumnListMetaData();
 
     try{
         while(rset->next()){
+            CarContainer cContainer;
             for(unsigned int i = 0; i < data.size(); i++){
                 temp = rset->getString(i+1);
                 switch(i)
@@ -203,26 +414,97 @@ CarContainer SqlInterface::searchCarData(string query){
                     break;
                 }
             }
+            vContainer.push_back(cContainer);
         }
     }
     catch(SQLException ex){
         cout<<"Exception thrown for select"<<endl;
         cout<<"Error number: "<<  ex.getErrorCode() << endl;
         cout<<ex.getMessage() << endl;
+        stmt->closeResultSet (rset);
+        conn->terminateStatement (stmt);
+        return vContainer;
     }
 
     stmt->closeResultSet (rset);
     conn->terminateStatement (stmt);
 
-    return cContainer;
+    return vContainer;
 }
 
-SalesContainer SqlInterface::searchSalesData(string query){
+vector<SalesContainer> SqlInterface::searchSalesData(SalesContainer container){
     ResultSet *rset;
-    SalesContainer sContainer;
+    vector<SalesContainer> vContainer;
     int temp2 = 0;
+    string query = "select * from Sales where ";
+    string buffer1;
+    string buffer2;
+    bool firstValue = true;
 
-    //query = "select * from maintenance where costs=100";
+    if(container.getCarId() != 0){
+        stringstream ss;
+        ss << container.getCarId();
+        buffer1 = ss.str();
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "car_id=" + buffer1 + " ";
+        firstValue = false;
+    }
+    if(strcmp(container.getAvailability().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "availability='" + container.getAvailability() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getDateSold().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "date_sold='" + container.getDateSold() + "' ";
+        firstValue = false;
+    }
+    if(container.getCost() != 0){
+        stringstream ss2;
+        ss2 << container.getCost();
+        buffer2 = ss2.str();
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "cost=" + buffer2 + " ";
+        firstValue = false;
+    }
+    if(strcmp(container.getDeliveryDate().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "delivery_date='" + container.getDeliveryDate() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getFirstName().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "first_name='" + container.getFirstName() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getLastName().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "last_name='" + container.getLastName() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getMake().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "make='" + container.getMake() + "' ";
+        firstValue = false;
+    }
+    if(strcmp(container.getModel().c_str(), "") != 0){
+        if(firstValue == false)
+           query = query + "and ";
+        query = query + "model='" + container.getModel() + "' ";
+        firstValue = false;
+    }
+    if(firstValue == true)
+        query = "select * from Sales where car_id=0";
+
+    cout << query << endl;
 
     stmt = conn->createStatement(query);
 
@@ -233,13 +515,16 @@ SalesContainer SqlInterface::searchSalesData(string query){
         cout<<"Exception thrown for select"<<endl;
         cout<<"Error number: "<<  ex.getErrorCode() << endl;
         cout<<ex.getMessage() << endl;
-    }
+        stmt->closeResultSet (rset);
+        conn->terminateStatement(stmt);
+        return vContainer;
 
-    vector<MetaData> data = rset->getColumnListMetaData();
+    }
 
     try{
         while(rset->next()){
-            for(unsigned int i = 0; i < data.size(); i++){
+            SalesContainer sContainer;
+            for(int i = 0; i < 9; i++){
                 temp = rset->getString(i+1);
                 switch(i)
                 {
@@ -265,18 +550,22 @@ SalesContainer SqlInterface::searchSalesData(string query){
                     break;
                 }
             }
+            vContainer.push_back(sContainer);
         }
     }
     catch(SQLException ex){
         cout<<"Exception thrown for select"<<endl;
         cout<<"Error number: "<<  ex.getErrorCode() << endl;
         cout<<ex.getMessage() << endl;
+        stmt->closeResultSet (rset);
+        conn->terminateStatement(stmt);
+        return vContainer;
     }
 
     stmt->closeResultSet (rset);
     conn->terminateStatement (stmt);
 
-    return sContainer;
+    return vContainer;
 }
 
 vector<MaintenanceContainer> SqlInterface::getMaintenanceData(){
@@ -635,7 +924,6 @@ void SqlInterface::salesInsert(vector<SalesContainer> container4, string table)
         value7 = container4[j].getMake();
         value8 = container4[j].getModel();
 
-
         stringstream ss;
         ss << value0;
         buffer1 = ss.str();
@@ -695,7 +983,6 @@ void SqlInterface::carInsert(vector<CarContainer> container3, string table)
         value11 = container3[j].getMake();
         value12 = container3[j].getModel();
 
-
         stringstream ss;
         ss << value0;
         buffer1 = ss.str();
@@ -745,8 +1032,6 @@ void SqlInterface::customerInsert(vector<CustomerContainer> container2, string t
         value6 = container2[j].getDeliveryDate();
         value7 = container2[j].getScheduledMaintenance();
         value8 = container2[j].getUnscheduledRepairs();
-
-
 
         stringstream ss;
         ss << value0;

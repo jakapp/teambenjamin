@@ -996,10 +996,82 @@ void MainWindow::OpenSearchDialog()
         salesDialog->exec();
 
         SalesContainer* container = salesDialog->GetSalesContainer();
+        SalesContainer transferContainer;
 
-        // PREFORM SEARCH....
+        transferContainer.setAvailability(container->getAvailability());
+        transferContainer.setCarId(container->getCarId());
+        transferContainer.setCost(container->getCost());
+        transferContainer.setDateSold(container->getDateSold());
+        transferContainer.setDeliveryDate(container->getDeliveryDate());
+        transferContainer.setFirstName(container->getFirstName());
+        transferContainer.setLastName(container->getLastName());
+        transferContainer.setMake(container->getMake());
+        transferContainer.setModel(container->getModel());
 
+        QStandardItemModel* model = new QStandardItemModel(1,9,this);
+        model->setHorizontalHeaderItem(0,new QStandardItem(QString("Car ID")));
+        model->setHorizontalHeaderItem(1,new QStandardItem(QString("Availability")));
+        model->setHorizontalHeaderItem(2,new QStandardItem(QString("Delivery Date")));
+        model->setHorizontalHeaderItem(3,new QStandardItem(QString("Cost")));
+        model->setHorizontalHeaderItem(4,new QStandardItem(QString("Date Sold")));
+        model->setHorizontalHeaderItem(5,new QStandardItem(QString("First Name")));
+        model->setHorizontalHeaderItem(6,new QStandardItem(QString("Last Name")));
+        model->setHorizontalHeaderItem(7,new QStandardItem(QString("Make")));
+        model->setHorizontalHeaderItem(8,new QStandardItem(QString("Model")));
 
+        vector<SalesContainer> container2 = sqlPtr->searchSalesData(transferContainer);
+        QStandardItem *firstRow;
+        QString intToString;
+        QString qStr;
+        int temp;
+        for(unsigned int j = 0; j < container2.size(); j++){
+            for(int i = 0; i < 9; i++){
+                switch(i)
+                {
+                case 0: temp = container2[j].getCarId();
+                    intToString = QString::number(temp);
+                    firstRow = new QStandardItem(intToString);
+                    model->setItem(j,0,firstRow);
+                    break;
+                case 1: qStr = QString::fromStdString(container2[j].getAvailability());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,1,firstRow);
+                    break;
+                case 2: qStr = QString::fromStdString(container2[j].getDeliveryDate());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,2,firstRow);
+                    break;
+                case 3: temp = container2[j].getCost();
+                    intToString = QString::number(temp);
+                    firstRow = new QStandardItem(intToString);
+                    model->setItem(j,3,firstRow);
+                    break;
+                case 4: qStr = QString::fromStdString(container2[j].getDateSold());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,4,firstRow);
+                    break;
+                case 5: qStr = QString::fromStdString(container2[j].getFirstName());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,5,firstRow);
+                    break;
+                case 6: qStr = QString::fromStdString(container2[j].getLastName());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,6,firstRow);
+                    break;
+                case 7: qStr = QString::fromStdString(container2[j].getMake());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,7,firstRow);
+                    break;
+                case 8: qStr = QString::fromStdString(container2[j].getModel());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,8,firstRow);
+                    break;
+                }
+            }
+        }
+        mode = "Search";
+        statusBar()->showMessage(tr("Search Results"));
+        ui->tableView->setModel(model);
 
         delete salesDialog;
 
@@ -1008,12 +1080,106 @@ void MainWindow::OpenSearchDialog()
     {
         CarSearchDialog* csd = new CarSearchDialog();
         csd->exec();
+        vector<CarContainer> container2;
 
         CarContainer* container = csd->GetContainer();
+        CarContainer transferContainer;
 
-        //PERFORM SEARCH
+        transferContainer.setCarId(container->getCarId());
+        transferContainer.setAudio(container->getAudio());
+        transferContainer.setComfort(container->getComfort());
+        transferContainer.setDesign(container->getDesign());
+        transferContainer.setHandeling(container->getHandeling());
+        transferContainer.setInstrumentation(container->getInstrumentation());
+        transferContainer.setMaintenance(container->getMaintenance());
+        transferContainer.setMake(container->getMake());
+        transferContainer.setModel(container->getModel());
+        transferContainer.setPackages(container->getPackages());
+        transferContainer.setPerformance(container->getPackages());
+        transferContainer.setSafetySecurity(container->getSafetySecurity());
+        transferContainer.setWarranty(container->getWarranty());
 
+        container2 = sqlPtr->searchCarData(transferContainer);
 
+        QStandardItemModel* model = new QStandardItemModel(1,10,this);
+        model->setHorizontalHeaderItem(0,new QStandardItem(QString("Car ID")));
+        model->setHorizontalHeaderItem(1,new QStandardItem(QString("First Name")));
+        model->setHorizontalHeaderItem(2,new QStandardItem(QString("Last Name")));
+        model->setHorizontalHeaderItem(3,new QStandardItem(QString("Address")));
+        model->setHorizontalHeaderItem(4,new QStandardItem(QString("State")));
+        model->setHorizontalHeaderItem(5,new QStandardItem(QString("Zip Code")));
+        model->setHorizontalHeaderItem(6,new QStandardItem(QString("Phone Number")));
+        model->setHorizontalHeaderItem(7,new QStandardItem(QString("Delivery Date")));
+        model->setHorizontalHeaderItem(8,new QStandardItem(QString("Scheduled Maintenance")));
+        model->setHorizontalHeaderItem(9,new QStandardItem(QString("Unscheduled Repairs")));
+
+        QStandardItem *firstRow;
+        QString intToString;
+        QString qStr;
+        int temp;
+        for(unsigned int j = 0; j < container2.size(); j++){
+            for(int i = 0; i < 13; i++){
+                switch(i)
+                {
+                case 0: temp = container2[j].getCarId();
+                    intToString = QString::number(temp);
+                    firstRow = new QStandardItem(intToString);
+                    model->setItem(j,0,firstRow);
+                    break;
+                case 1: qStr = QString::fromStdString(container2[j].getMake());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,1,firstRow);
+                    break;
+                case 2: qStr = QString::fromStdString(container2[j].getModel());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,2,firstRow);
+                    break;
+                case 3: qStr = QString::fromStdString(container2[j].getPerformance());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,3,firstRow);
+                    break;
+                case 4: qStr = QString::fromStdString(container2[j].getHandeling());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,4,firstRow);
+                    break;
+                case 5: qStr = QString::fromStdString(container2[j].getInstrumentation());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,5,firstRow);
+                    break;
+                case 6: qStr = QString::fromStdString(container2[j].getSafetySecurity());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,6,firstRow);
+                    break;
+                case 7: qStr = QString::fromStdString(container2[j].getDesign());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,7,firstRow);
+                    break;
+                case 8: qStr = QString::fromStdString(container2[j].getAudio());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,8,firstRow);
+                    break;
+                case 9: qStr = QString::fromStdString(container2[j].getComfort());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,9,firstRow);
+                    break;
+                case 10: qStr = QString::fromStdString(container2[j].getMaintenance());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,10,firstRow);
+                    break;
+                case 11: qStr = QString::fromStdString(container2[j].getWarranty());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,11,firstRow);
+                    break;
+                case 12: qStr = QString::fromStdString(container2[j].getPackages());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,12,firstRow);;
+                    break;
+                }
+            }
+        }
+        mode = "Search";
+        statusBar()->showMessage(tr("Search Results"));
+        ui->tableView->setModel(model);
 
         delete csd;
     }
@@ -1022,11 +1188,57 @@ void MainWindow::OpenSearchDialog()
         SearchMaintenanceDialog* msd = new SearchMaintenanceDialog();
         msd->exec();
 
+        vector<MaintenanceContainer> container2;
         MaintenanceContainer* container = msd->GetContainer();
+        MaintenanceContainer transferContainer;
 
-        //PERFORM SEARCH
+        transferContainer.setCarId(container->getCarId());
+        transferContainer.setCosts(container->getCost());
+        transferContainer.setDamages(container->getDamages());
+        transferContainer.setFinishDate(container->getFinishDate());
 
+        container2 = sqlPtr->searchMaintenanceData(transferContainer);
 
+        QStandardItemModel* model = new QStandardItemModel(1,5,this);
+        model->setHorizontalHeaderItem(0,new QStandardItem(QString("Car ID")));
+        model->setHorizontalHeaderItem(1,new QStandardItem(QString("Damages")));
+        model->setHorizontalHeaderItem(2,new QStandardItem(QString("Costs")));
+        model->setHorizontalHeaderItem(3,new QStandardItem(QString("Start Date")));
+        model->setHorizontalHeaderItem(4,new QStandardItem(QString("Finish Date")));
+        QStandardItem *firstRow;
+        QString intToString;
+        QString qStr;
+        int temp;
+        for(unsigned int j = 0; j < container2.size(); j++){
+            for(int i = 0; i < 5; i++){
+                switch(i)
+                {
+                case 0: temp = container2[j].getCarId();
+                    intToString = QString::number(temp);
+                    firstRow = new QStandardItem(intToString);
+                    model->setItem(j,0,firstRow);
+                    break;
+                case 1: qStr = QString::fromStdString(container2[j].getDamages());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,1,firstRow);
+                    break;
+                case 2: firstRow = new QStandardItem(container2[j].getCost());
+                    model->setItem(j,2,firstRow);
+                    break;
+                case 3: qStr = QString::fromStdString(container2[j].getStartDate());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,3,firstRow);
+                    break;
+                case 4: qStr = QString::fromStdString(container2[j].getFinishDate());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,4,firstRow);
+                    break;
+                }
+            }
+        }
+        mode = "Search";
+        statusBar()->showMessage(tr("Search Results"));
+        ui->tableView->setModel(model);
 
         delete msd;
     }
@@ -1035,11 +1247,88 @@ void MainWindow::OpenSearchDialog()
         SearchCustomerDialog* csd = new SearchCustomerDialog();
         csd->exec();
 
+        vector<CustomerContainer> container2;
+
         CustomerContainer* container = csd->GetContainer();
+        CustomerContainer transferContainer;
 
-        //PERFORM SEARCH
+        transferContainer.setCarId(container->getCarId());
+        transferContainer.setAddress(container->getAddress());
+        transferContainer.setDeliveryDate(container->getDeliveryDate());
+        transferContainer.setFirstName(container->getFirstName());
+        transferContainer.setLastName(container->getLastName());
+        transferContainer.setScheduledMaintenance(container->getScheduledMaintenance());
+        transferContainer.setState(container->getState());
+        transferContainer.setUnscheduledRepairs(container->getUnscheduledRepairs());
 
+        container2 = sqlPtr->searchCustomerData(transferContainer);
 
+        QStandardItemModel* model = new QStandardItemModel(1,10,this);
+        model->setHorizontalHeaderItem(0,new QStandardItem(QString("Car ID")));
+        model->setHorizontalHeaderItem(1,new QStandardItem(QString("First Name")));
+        model->setHorizontalHeaderItem(2,new QStandardItem(QString("Last Name")));
+        model->setHorizontalHeaderItem(3,new QStandardItem(QString("Address")));
+        model->setHorizontalHeaderItem(4,new QStandardItem(QString("State")));
+        model->setHorizontalHeaderItem(5,new QStandardItem(QString("Zip Code")));
+        model->setHorizontalHeaderItem(6,new QStandardItem(QString("Phone Number")));
+        model->setHorizontalHeaderItem(7,new QStandardItem(QString("Delivery Date")));
+        model->setHorizontalHeaderItem(8,new QStandardItem(QString("Scheduled Maintenance")));
+        model->setHorizontalHeaderItem(9,new QStandardItem(QString("Unscheduled Repairs")));
+
+        QStandardItem *firstRow;
+        QString intToString;
+        QString qStr;
+        int temp;
+        for(unsigned int j = 0; j < container2.size(); j++){
+            for(int i = 0; i < 10; i++){
+                switch(i)
+                {
+                case 0: temp = container2[j].getCarId();
+                    intToString = QString::number(temp);
+                    firstRow = new QStandardItem(intToString);
+                    model->setItem(j,0,firstRow);
+                    break;
+                case 1: qStr = QString::fromStdString(container2[j].getFirstName());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,1,firstRow);
+                    break;
+                case 2: qStr = QString::fromStdString(container2[j].getLastName());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,2,firstRow);
+                    break;
+                case 3: qStr = QString::fromStdString(container2[j].getAddress());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,3,firstRow);
+                    break;
+                case 4: qStr = QString::fromStdString(container2[j].getState());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,4,firstRow);
+                    break;
+                case 5:temp = container2[j].getZip();
+                    intToString = QString::number(temp);
+                    firstRow = new QStandardItem(intToString);
+                    model->setItem(j,5,firstRow);
+                    break;
+                case 6:
+                    break;
+                case 7: qStr = QString::fromStdString(container2[j].getDeliveryDate());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,7,firstRow);
+                    break;
+                case 8: qStr = QString::fromStdString(container2[j].getScheduledMaintenance());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,8,firstRow);
+                    break;
+                case 9: qStr = QString::fromStdString(container2[j].getUnscheduledRepairs());
+                    firstRow = new QStandardItem(qStr);
+                    model->setItem(j,9,firstRow);
+                    break;
+                }
+            }
+        }
+        statusBar()->showMessage(tr("Search Results"));
+        mode = "Search";
+        ui->tableView->setModel(model);
 
         delete csd;
     }

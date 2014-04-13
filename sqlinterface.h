@@ -25,10 +25,10 @@ public:
 
     void connect(string user, string passwd, string db);
 
-    MaintenanceContainer searchMaintenanceData(string query);
-    CustomerContainer searchCustomerData(string query);
-    CarContainer searchCarData(string query);
-    SalesContainer searchSalesData(string query);
+    vector<MaintenanceContainer> searchMaintenanceData(MaintenanceContainer container);
+    vector<CustomerContainer> searchCustomerData(CustomerContainer container);
+    vector<CarContainer> searchCarData(CarContainer container);
+    vector<SalesContainer> searchSalesData(SalesContainer container);
 
     vector<MaintenanceContainer> getMaintenanceData();
     vector<CustomerContainer> getCustomerData();
