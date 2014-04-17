@@ -15,13 +15,13 @@
 #define SALES    3
 
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent, SqlInterface *ptr) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),userMode(supervisor)
 {
     ui->setupUi(this);
     QVBoxLayout *layout = new QVBoxLayout(parent);
-    sqlPtr = NULL;
+    sqlPtr =ptr;
 
 //  connect(, SIGNAL(destroyed(QObject*)), this, SLOT(objectDestroyed(Qbject*)));
     connect(ui->btnAdd,SIGNAL(clicked()),this,SLOT(AddItem()));
@@ -382,6 +382,7 @@ void MainWindow::SetSupervisor()
     statusBar()->showMessage(tr("Customer Table"));
     mode = "Customers";
     ui->tableView->setModel(model);
+    ui->comboBox->setCurrentIndex(1);
 
     userMode = supervisor;
     ui->comboBox->setVisible(true);
@@ -519,7 +520,9 @@ void MainWindow::SetMaintenence()
                 firstRow = new QStandardItem(qStr);
                 model->setItem(j,1,firstRow);
                 break;
-            case 2: firstRow = new QStandardItem(container[j].getCost());
+            case 2: temp = container[j].getCost();
+                intToString = QString::number(temp);
+                firstRow = new QStandardItem(intToString);
                 model->setItem(j,2,firstRow);
                 break;
             case 3: qStr = QString::fromStdString(container[j].getStartDate());
@@ -538,6 +541,9 @@ void MainWindow::SetMaintenence()
     ui->tableView->setModel(model);
     mode = "Maintenance";
     userMode = maintenance;
+
+//    ui->comboBox->setCurrentIndex(2);
+//    SetTable();
 
     ui->comboBox->setVisible(false);
     ui->btnAdd->setVisible(true);
@@ -738,7 +744,9 @@ void MainWindow::SetTable()
                         firstRow = new QStandardItem(qStr);
                         model->setItem(j,1,firstRow);
                         break;
-                    case 2: firstRow = new QStandardItem(container[j].getCost());
+                    case 2: temp = container[j].getCost();
+                        intToString = QString::number(temp);
+                        firstRow = new QStandardItem(intToString);
                         model->setItem(j,2,firstRow);
                         break;
                     case 3: qStr = QString::fromStdString(container[j].getStartDate());
@@ -1101,17 +1109,20 @@ void MainWindow::OpenSearchDialog()
 
         container2 = sqlPtr->searchCarData(transferContainer);
 
-        QStandardItemModel* model = new QStandardItemModel(1,10,this);
+        QStandardItemModel* model = new QStandardItemModel(1,13,this);
         model->setHorizontalHeaderItem(0,new QStandardItem(QString("Car ID")));
-        model->setHorizontalHeaderItem(1,new QStandardItem(QString("First Name")));
-        model->setHorizontalHeaderItem(2,new QStandardItem(QString("Last Name")));
-        model->setHorizontalHeaderItem(3,new QStandardItem(QString("Address")));
-        model->setHorizontalHeaderItem(4,new QStandardItem(QString("State")));
-        model->setHorizontalHeaderItem(5,new QStandardItem(QString("Zip Code")));
-        model->setHorizontalHeaderItem(6,new QStandardItem(QString("Phone Number")));
-        model->setHorizontalHeaderItem(7,new QStandardItem(QString("Delivery Date")));
-        model->setHorizontalHeaderItem(8,new QStandardItem(QString("Scheduled Maintenance")));
-        model->setHorizontalHeaderItem(9,new QStandardItem(QString("Unscheduled Repairs")));
+        model->setHorizontalHeaderItem(1,new QStandardItem(QString("Make")));
+        model->setHorizontalHeaderItem(2,new QStandardItem(QString("Model")));
+        model->setHorizontalHeaderItem(3,new QStandardItem(QString("Performance")));
+        model->setHorizontalHeaderItem(4,new QStandardItem(QString("Handeling")));
+        model->setHorizontalHeaderItem(5,new QStandardItem(QString("Instrumentation")));
+        model->setHorizontalHeaderItem(6,new QStandardItem(QString("Safety Security")));
+        model->setHorizontalHeaderItem(7,new QStandardItem(QString("Design")));
+        model->setHorizontalHeaderItem(8,new QStandardItem(QString("Audio")));
+        model->setHorizontalHeaderItem(9,new QStandardItem(QString("Comfort")));
+        model->setHorizontalHeaderItem(10,new QStandardItem(QString("Maintenance")));
+        model->setHorizontalHeaderItem(11,new QStandardItem(QString("Warrenty")));
+        model->setHorizontalHeaderItem(12,new QStandardItem(QString("Packages")));
 
         QStandardItem *firstRow;
         QString intToString;
@@ -1222,7 +1233,9 @@ void MainWindow::OpenSearchDialog()
                     firstRow = new QStandardItem(qStr);
                     model->setItem(j,1,firstRow);
                     break;
-                case 2: firstRow = new QStandardItem(container2[j].getCost());
+                case 2: temp = container[j].getCost();
+                    intToString = QString::number(temp);
+                    firstRow = new QStandardItem(intToString);
                     model->setItem(j,2,firstRow);
                     break;
                 case 3: qStr = QString::fromStdString(container2[j].getStartDate());

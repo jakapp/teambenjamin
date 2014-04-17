@@ -11,11 +11,11 @@ int main(int argc, char *argv[]){
     QApplication a(argc, argv);
     SqlInterface interface;
     MaintenanceContainer mContainer;
-    MainWindow w;
+
 
     interface.connect("scott","password","localhost:1521/skynetdb");
-
-    w.setDatabasePointer(&interface);
+   MainWindow w(0 ,&interface);
+    //w.setDatabasePointer(&interface);
     w.show();
 
     return a.exec();

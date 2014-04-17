@@ -62,7 +62,7 @@ vector<MaintenanceContainer> SqlInterface::searchMaintenanceData(MaintenanceCont
         buffer2 = ss2.str();
         if(firstValue == false)
            query = query + "and ";
-        query = query + "cost=" + buffer2 + " ";
+        query = query + "costs=" + buffer2 + " ";
         firstValue = false;
     }
     if(strcmp(container.getStartDate().c_str(), "") != 0){
@@ -74,7 +74,7 @@ vector<MaintenanceContainer> SqlInterface::searchMaintenanceData(MaintenanceCont
     if(strcmp(container.getFinishDate().c_str(), "") != 0){
         if(firstValue == false)
            query = query + "and ";
-        query = query + "finish_date='" + container.getFinishDate() + "' ";
+        query = query + "completion_date='" + container.getFinishDate() + "' ";
         firstValue = false;
     }
     if(firstValue == true)
@@ -302,13 +302,13 @@ vector<CarContainer> SqlInterface::searchCarData(CarContainer container){
     if(strcmp(container.getPerformance().c_str(), "") != 0){
         if(firstValue == false)
            query = query + "and ";
-        query = query + "performance=" + container.getPerformance() + " ";
+        query = query + "performance='" + container.getPerformance() + "' ";
         firstValue = false;
     }
     if(strcmp(container.getHandeling().c_str(), "") != 0){
         if(firstValue == false)
            query = query + "and ";
-        query = query + "handeling='" + container.getHandeling() + "' ";
+        query = query + "handling='" + container.getHandeling() + "' ";
         firstValue = false;
     }
     if(strcmp(container.getInstrumentation().c_str(), "") != 0){
@@ -350,7 +350,7 @@ vector<CarContainer> SqlInterface::searchCarData(CarContainer container){
     if(strcmp(container.getWarranty().c_str(), "") != 0){
         if(firstValue == false)
            query = query + "and ";
-        query = query + "design='" + container.getWarranty() + "' ";
+        query = query + "warranty='" + container.getWarranty() + "' ";
         firstValue = false;
     }
     if(strcmp(container.getPackages().c_str(), "") != 0){
@@ -361,6 +361,8 @@ vector<CarContainer> SqlInterface::searchCarData(CarContainer container){
     }
     if(firstValue == true)
         query = "select * from Sales where car_id=0";
+
+    cout << query << endl;
 
     stmt = conn->createStatement(query);
 
